@@ -1,0 +1,58 @@
+import pulp
+
+InvestLP = pulp.LpProblem("Job Contraction", sense=pulp.LpMinimize)
+
+x11 = pulp.LpVariable('X11', cat='Binary')
+x12 = pulp.LpVariable('X12', cat='Binary')
+x13 = pulp.LpVariable('X13', cat='Binary')
+x14 = pulp.LpVariable('X14', cat='Binary')
+x15 = pulp.LpVariable('X15', cat='Binary')
+x16 = pulp.LpVariable('X16', cat='Binary')
+x21 = pulp.LpVariable('X21', cat='Binary')
+x22 = pulp.LpVariable('X22', cat='Binary')
+x23 = pulp.LpVariable('X23', cat='Binary')
+x24 = pulp.LpVariable('X24', cat='Binary')
+x25 = pulp.LpVariable('X25', cat='Binary')
+x26 = pulp.LpVariable('X26', cat='Binary')
+x31 = pulp.LpVariable('X31', cat='Binary')
+x32 = pulp.LpVariable('X32', cat='Binary')
+x33 = pulp.LpVariable('X33', cat='Binary')
+x34 = pulp.LpVariable('X34', cat='Binary')
+x35 = pulp.LpVariable('X35', cat='Binary')
+x36 = pulp.LpVariable('X36', cat='Binary')
+x41 = pulp.LpVariable('X41', cat='Binary')
+x42 = pulp.LpVariable('X42', cat='Binary')
+x43 = pulp.LpVariable('X43', cat='Binary')
+x44 = pulp.LpVariable('X44', cat='Binary')
+x45 = pulp.LpVariable('X45', cat='Binary')
+x46 = pulp.LpVariable('X46', cat='Binary')
+x51 = pulp.LpVariable('X51', cat='Binary')
+x52 = pulp.LpVariable('X52', cat='Binary')
+x53 = pulp.LpVariable('X53', cat='Binary')
+x54 = pulp.LpVariable('X54', cat='Binary')
+x55 = pulp.LpVariable('X55', cat='Binary')
+x56 = pulp.LpVariable('X56', cat='Binary')
+
+InvestLP += (45 * x11 + 42 * x12 + 53 * x13 + 39 * x14 + 48 * x15 + 52 * x16 +
+             66 * x21 + 70 * x22 + 59 * x23 + 1000 * x24 + 62 * x25 + 75 * x26 +
+             81 * x31 + 78 * x32 + 89 * x33 + 83 * x34 + 80 * x35 + 84 * x36 +
+             57 * x41 + 53 * x42 + 58 * x43 + 55 * x44 + 52 * x45 + 49 * x46 +
+             65 * x51 + 62 * x52 + 64 * x53 + 67 * x54 + 68 * x55 + 60 * x56)
+InvestLP += (x11 + x12 + x13 + x14 + x15 + x16 == 1)
+InvestLP += (x21 + x22 + x23 + x24 + x25 + x26 == 1)
+InvestLP += (x31 + x32 + x33 + x34 + x35 + x36 == 1)
+InvestLP += (x41 + x42 + x43 + x44 + x45 + x46 == 1)
+InvestLP += (x51 + x52 + x53 + x54 + x55 + x56 == 1)
+InvestLP += (x11 + x21 + x31 + x41 + x51 <= 2)
+InvestLP += (x12 + x22 + x32 + x42 + x52 <= 2)
+InvestLP += (x13 + x23 + x33 + x43 + x53 <= 2)
+InvestLP += (x14 + x24 + x34 + x44 + x54 <= 2)
+InvestLP += (x15 + x25 + x35 + x45 + x55 <= 2)
+InvestLP += (x16 + x26 + x36 + x46 + x56 <= 2)
+
+InvestLP.solve()
+print(InvestLP.name)
+print("Status:", pulp.LpStatus[InvestLP.status])
+for v in InvestLP.variables():
+    print(v.name, '=', v.varValue)
+print("Min f(x) =", pulp.value(InvestLP.objective))
